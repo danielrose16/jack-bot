@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@jack-bot/chat-core": ["libs/core/src/index.ts"],
+      "@jack-bot/shared-types": ["libs/shared/src/index.ts"],
+      "@jack-bot/ui": ["libs/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
