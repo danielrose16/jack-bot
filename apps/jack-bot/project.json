@@ -37,6 +37,12 @@
               "maximumError": "8kb"
             }
           ],
+          "fileReplacements": [
+            {
+              "replace": "apps/jack-bot/src/environments/environment.ts",
+              "with": "apps/jack-bot/src/environments/environment.prod.ts"
+            }
+          ],
           "outputHashing": "all"
         },
         "development": {

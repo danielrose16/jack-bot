@@ -1,0 +1,74 @@
+<div class="container py-6">
+  <div class="card space-y-3">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">{{ profile().icon }} {{ profile().name }}</h2>
+      <div class="flex items-center gap-2">
+        <button class="btn" (click)="showSettings.set(!showSettings())">הגדרות</button>
+        <button class="btn" (click)="clearHistory()">ניקוי היסטוריה</button>
+      </div>
+    </div>
+
+    @if (showSettings()) {
+      <div class="p-3 rounded-xl border space-y-3">
+        <div class="flex gap-2">
+          <input class="input" [(ngModel)]="nameModel" placeholder="Bot name">
+        </div>
+        <div class="flex flex-row-reverse gap-2 items-center">
+          <div class="flex flex-wrap gap-2 [direction:rtl]">
+            @for (emojiOption of emojiOptions; track emojiOption) {
+              <button
+                class="btn"
+                [class.border-blue-500]="iconModel===emojiOption"
+                (click)="pickEmoji(emojiOption)">
+                {{ emojiOption }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-center [direction:rtl]">
+          <label class="flex items-center gap-1 text-sm">
+            <select class="input" [(ngModel)]="toneModel">
+              @for (t of toneLabels | keyvalue; track t.key) {
+                <option [ngValue]="t.key">{{ t.value }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" [(ngModel)]="emojiModel"> emoji
+          </label>
+
+          <button class="btn" (click)="saveProfile()">שמירה</button>
+        </div>
+      </div>
+    }
+
+    <div class="h-[60vh] overflow-auto space-y-2" role="log" aria-live="polite" aria-relevant="additions">
+      @for (m of msgs(); track trackById($index, m)) {
+        <div class="flex" [class.justify-end]="m.author==='user'">
+          <div class="max-w-[80%] rounded-2xl px-3 py-2" [ngClass]="m.author==='user' ? 'bg-blue-50' : 'bg-gray-100'">
+            <div class="text-xs opacity-60 mb-1">
+              {{ m.author === 'bot' ? (profile().icon + ' ' + profile().name) : 'you' }} • {{ m.ts | date:'shortTime' }}
+            </div>
+            <div class="whitespace-pre-wrap [direction:rtl] [unicode-bidi:isolate] text-right">{{ m.text }}</div>
+          </div>
+        </div>
+      }
+
+      @if (typing()) {
+        <div class="flex" data-testid="typing-indicator">
+          <div class="max-w-[60%] rounded-2xl px-3 py-2 bg-gray-100">
+            <div class="text-xs opacity-60 mb-1">{{ profile().icon }} {{ profile().name }} • מקליד/ה…</div>
+            <div class="flex items-center gap-1"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="flex gap-2">
+      <button class="btn" (click)="send()">שליחה</button>
+      <input class="input [direction:rtl] [unicode-bidi:isolate] text-right" [(ngModel)]="text" placeholder="שאל משהו על Angular…" (keyup.enter)="send()" aria-label="הודעה">
+    </div>
+  </div>
+</div>
