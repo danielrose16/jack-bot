@@ -1,0 +1,8 @@
+[build]
+  command = "npx nx build jack-bot"
+  publish = "dist/apps/jack-bot"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
